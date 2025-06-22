@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "face-tracking"
+version = "0.1.0"
+description = "USB-turret face tracker using OpenCV, MediaPipe, and Arduino"
+authors = [{name="Your Name", email="you@example.com"}]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "opencv-python>=4.9",
+    "mediapipe>=0.10",
+    "numpy>=1.26",
+    "filterpy>=1.4",
+    "pyserial>=3.5",
+]
+
+[project.scripts]
+face-tracker = "face_tracking.processor:TargetingProcessor"  # optional console-script
