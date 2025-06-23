@@ -1,0 +1,11 @@
+{
+  "predict_lead_time_s":   0.2,
+  "measurement_noise_std": 0.5,
+  "process_noise_std":     300.0,
+
+  "kp_pan":                0.05,
+  "kp_tilt":               0.03,
+  "error_deadzone_px":     5,
+  "min_angle_change_deg":  0.01,
+  "max_cmd_rate_hz":       100.0
+}

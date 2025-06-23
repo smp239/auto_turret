@@ -1,10 +1,9 @@
 # config.py
 """Typed configuration blobs for the whole system."""
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 
-# ---------------------- Camera ----------------------
 @dataclass
 class CameraConfig:
     device_index: int = 0
@@ -14,35 +13,39 @@ class CameraConfig:
     use_v4l2: bool = True
     fourcc_str: str = "MJPG"
     horizontal_fov_deg: float = 70.0  # From camera data-sheet
+    gain: int | None = 0              # 0‒100
+    contrast: int | None = 32          # 0‒64
+    sharpness: int | None = 3         # 0‒6
+    auto_exposure: int | None = 3     # 1=manual, 3=auto
+    exposure_time_absolute: int | None = 157  # 1‒5000 (1/10 000 s)
 
 
-# --------------------- Detector ---------------------
 @dataclass
 class DetectorConfig:
     model_selection: int = 0
-    min_detection_confidence: float = 0.25
-    min_bbox_size_for_tracking: int = 30
+    min_detection_confidence: float = 0.5
+    min_bbox_size_for_tracking: int = 20
 
 
-# ---------------------- Tracker ---------------------
 @dataclass
 class TrackerConfig:
-    predict_lead_time_s: float = 0.15
-    measurement_noise_std: float = 10.0
-    process_noise_std: float = 150.0
-    initial_velocity_error_std: float = 100.0
+    # Lead time for future prediction (s)
+    predict_lead_time_s: float = 0.05
+    # Noise parameters tuned for pixel-level tracking
+    measurement_noise_std: float = 3.0       # px
+    process_noise_std: float = 70.0          # px/s²
+    initial_velocity_error_std: float = 30.0  # px/s
 
 
-# ---------------------- PanTilt ---------------------
 @dataclass
 class PanTiltConfig:
-    port: Optional[str] = None          # Set to "/dev/ttyACM0" or COM-port to enable
+    port: Optional[str] = None
     baudrate: int = 250_000
     home_on_startup: bool = True
     rest_on_shutdown: bool = True
-    kp_pan: float = 0.08
-    kp_tilt: float = 0.06
-    error_deadzone_px: int = 15
+    kp_pan: float = 0.06
+    kp_tilt: float = 0.03
+    error_deadzone_px: int = 5
     min_angle_change_deg: float = 0.05
     max_cmd_rate_hz: float = 100.0
     use_blocking_moves: bool = False
@@ -50,7 +53,6 @@ class PanTiltConfig:
     invert_tilt_output: bool = False
 
 
-# ----------------------- Search ---------------------
 @dataclass
 class SearchConfig:
     enabled: bool = True
@@ -58,6 +60,3 @@ class SearchConfig:
     tilt_deg: float = 0.0
     dwell_time_s: float = 1.0
     no_detection_threshold_s: float = 3.0
-
-
-
